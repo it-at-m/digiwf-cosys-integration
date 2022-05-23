@@ -8,6 +8,7 @@
     <artifactId>digiwf-cosys-integration-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
+    <name>digiwf-cosys-integration-parent</name>
     <description>CoSys integration used by DigiWF</description>
     <url>https://github.com/it-at-m/digiwf-cosys-integration</url>
 

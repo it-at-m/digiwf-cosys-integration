@@ -29,7 +29,7 @@ public class RestTemplateConfig {
                 (outReq, bytes, clientHttpReqExec) -> {
                     try {
                         outReq.getHeaders().set(
-                                HttpHeaders.AUTHORIZATION, this.generateAccessToken()
+                                HttpHeaders.AUTHORIZATION, "Bearer "+this.generateAccessToken()
                         );
                     } catch (final Exception e) {
                         log.error("Access Token could not be created");

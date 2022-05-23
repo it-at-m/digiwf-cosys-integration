@@ -8,15 +8,21 @@ import io.muenchendigital.digiwf.s3.integration.client.repository.DocumentStorag
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -34,8 +40,6 @@ public class CosysService {
     static final String ATTRIBUTE_MERGE = "merge";
     static final String ATTRIBUTE_STATE_FILTER = "stateFilter";
     static final String ATTRIBUTE_VALIDITY = "validity";
-    static final String COSYS_DATA_FILENAME = "data.xml";
-    static final String COSYS_MERGE_FILENAME = "merge.json";
 
     /**
      * Generate a Document in Cosys and save it in S3 Path.
@@ -93,10 +97,25 @@ public class CosysService {
     }
 
     private HttpEntity createBody(final GenerateDocumentRequest request) throws IOException {
-        final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-        builder.addPart(ATTRIBUTE_DATA, new ByteArrayBody(request.getData(), ContentType.APPLICATION_XML, COSYS_DATA_FILENAME));
-        builder.addPart(ATTRIBUTE_MERGE, new ByteArrayBody(request.getMerge(), ContentType.APPLICATION_JSON, COSYS_MERGE_FILENAME));
-        return builder.build();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setConnection("keep-alive");
+        headers.setAccept(List.of(MediaType.MULTIPART_FORM_DATA));
+
+        final MultiValueMap<String, Object> body
+                = new LinkedMultiValueMap<>();
+
+
+        body.set(ATTRIBUTE_DATA, this.createResource(ATTRIBUTE_DATA, ".xml", request.getData()));
+        body.set(ATTRIBUTE_MERGE, this.createResource(ATTRIBUTE_MERGE, ".json", request.getMerge()));
+        return new HttpEntity(body, headers);
+    }
+
+    private Resource createResource(final String name, final String suffix, final byte[] content) throws IOException {
+        final Path tempFile = Files.createTempFile(name, suffix);
+        Files.write(tempFile, content);
+        final File file = tempFile.toFile();
+        return new FileSystemResource(file);
     }
 }

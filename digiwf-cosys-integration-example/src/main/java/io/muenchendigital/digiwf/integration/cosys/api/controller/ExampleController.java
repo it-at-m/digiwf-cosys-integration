@@ -29,7 +29,7 @@ public class ExampleController {
 
     @GetMapping(value = "/testEventBus")
     public void testEventBus() {
-        this.genericPayloadSender.sendPayload(this.generateDocument(), "createCosysDocument");
+        this.genericPayloadSender.sendPayload(this.generateDocument(), "generateDocument");
     }
 
     private GenerateDocument generateDocument() {

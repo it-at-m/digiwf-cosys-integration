@@ -21,6 +21,10 @@ public class CosysProperties {
 
     private String ssoTokenClientSecret;
 
+    private String topic;
+
+    private String engineTopic;
+
     @Getter
     @Setter
     public static class MergeProperties {

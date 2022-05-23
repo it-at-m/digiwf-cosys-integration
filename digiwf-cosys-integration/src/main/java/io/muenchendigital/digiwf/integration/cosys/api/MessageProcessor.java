@@ -28,7 +28,7 @@ public class MessageProcessor {
      * @return the consumer
      */
     @Bean
-    public Consumer<Message<GenerateDocument>> generateDocument() {
+    public Consumer<Message<GenerateDocument>> createCosysDocument() {
         return message -> {
             log.info("Processing generate document request from eventbus");
             final GenerateDocument document = message.getPayload();

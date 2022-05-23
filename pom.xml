@@ -29,7 +29,8 @@
     <modules>
         <module>digiwf-cosys-integration</module>
         <module>digiwf-cosys-integration-starter</module>
-        <module>example</module>
+        <module>digiwf-cosys-integration-example</module>
+        <module>digiwf-cosys-integration-service</module>
     </modules>
 
     <dependencyManagement>

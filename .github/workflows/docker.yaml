@@ -8,7 +8,7 @@ on:
       - first_version
 
 jobs:
-  release:
+  docker:
     runs-on: ubuntu-18.04
     steps:
       - name: Check out Git repository
@@ -40,6 +40,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./digiwf-email-integration-service
+          context: ./digiwf-cosys-integration-service
           push: true
           tags: itatm/digiwf-cosys-integration-service:latest,itatm/digiwf-cosys-integration-service:${{ steps.get-version.outputs.version }}

@@ -22,13 +22,10 @@ public class RestTemplateFactory {
 
     private final CosysConfiguration cosysConfiguration;
 
-
     @Bean
     public RestTemplate defaultRestTemplate() {
-        final RestTemplate restTemplate = new RestTemplate();
-        return restTemplate;
+        return new RestTemplate();
     }
-
 
     public RestTemplate authenticatedRestTemplate() {
         final RestTemplate restTemplate = new RestTemplate();

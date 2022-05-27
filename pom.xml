@@ -74,7 +74,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <!-- Version muss mit der durch Spring-Boot-Starter bereitgestellten Version übereinstimmen -->
+                            <!-- Should be the same version as spring-boot-starters provided version -->
                             <version>${lombok.version}</version>
                         </path>
                         <!-- other annotation processors -->

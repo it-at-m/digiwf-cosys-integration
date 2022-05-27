@@ -10,6 +10,7 @@ import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +22,15 @@ public class RestTemplateFactory {
 
     private final CosysConfiguration cosysConfiguration;
 
-    public RestTemplate restTemplate() {
+
+    @Bean
+    public RestTemplate defaultRestTemplate() {
+        final RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
+    }
+
+
+    public RestTemplate authenticatedRestTemplate() {
         final RestTemplate restTemplate = new RestTemplate();
         restTemplate.getInterceptors().add(
                 (outReq, bytes, clientHttpReqExec) -> {

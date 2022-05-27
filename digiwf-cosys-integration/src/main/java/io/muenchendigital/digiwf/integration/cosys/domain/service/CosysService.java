@@ -43,7 +43,7 @@ public class CosysService {
 
 
     public CosysService(final RestTemplateFactory restTemplateFactory, final CosysConfiguration cosysConfiguration, final DocumentStorageFileRepository documentStorageFileRepository, final GenerateDocumentRequestMapper generateDocumentRequestMapper) {
-        this.restTemplate = restTemplateFactory.restTemplate();
+        this.restTemplate = restTemplateFactory.authenticatedRestTemplate();
         this.cosysConfiguration = cosysConfiguration;
         this.documentStorageFileRepository = documentStorageFileRepository;
         this.generateDocumentRequestMapper = generateDocumentRequestMapper;

@@ -1,11 +1,11 @@
 package io.muenchendigital.digiwf.integration.cosys.domain.service;
 
 import io.muenchendigital.digiwf.integration.cosys.configuration.CosysConfiguration;
+import io.muenchendigital.digiwf.integration.cosys.configuration.RestTemplateFactory;
 import io.muenchendigital.digiwf.integration.cosys.domain.mapper.GenerateDocumentRequestMapper;
 import io.muenchendigital.digiwf.integration.cosys.domain.model.GenerateDocument;
 import io.muenchendigital.digiwf.integration.cosys.domain.model.GenerateDocumentRequest;
 import io.muenchendigital.digiwf.s3.integration.client.repository.DocumentStorageFileRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.FileSystemResource;
@@ -26,7 +26,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class CosysService {
 
     private final RestTemplate restTemplate;
@@ -34,12 +33,21 @@ public class CosysService {
     private final DocumentStorageFileRepository documentStorageFileRepository;
     private final GenerateDocumentRequestMapper generateDocumentRequestMapper;
 
+
     static final String ATTRIBUTE_CLIENT = "client";
     static final String ATTRIBUTE_ROLE = "role";
     static final String ATTRIBUTE_DATA = "data";
     static final String ATTRIBUTE_MERGE = "merge";
     static final String ATTRIBUTE_STATE_FILTER = "stateFilter";
     static final String ATTRIBUTE_VALIDITY = "validity";
+
+
+    public CosysService(final RestTemplateFactory restTemplateFactory, final CosysConfiguration cosysConfiguration, final DocumentStorageFileRepository documentStorageFileRepository, final GenerateDocumentRequestMapper generateDocumentRequestMapper) {
+        this.restTemplate = restTemplateFactory.restTemplate();
+        this.cosysConfiguration = cosysConfiguration;
+        this.documentStorageFileRepository = documentStorageFileRepository;
+        this.generateDocumentRequestMapper = generateDocumentRequestMapper;
+    }
 
     /**
      * Generate a Document in Cosys and save it in S3 Path.

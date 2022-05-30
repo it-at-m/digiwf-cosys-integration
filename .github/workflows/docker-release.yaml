@@ -1,4 +1,4 @@
-name: Docker
+name: Docker Release
 
 # Run workflow on commits to the `master` branch
 on:

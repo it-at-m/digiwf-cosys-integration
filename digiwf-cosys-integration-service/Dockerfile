@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM registry.access.redhat.com/ubi8/openjdk-11:latest
 
 EXPOSE 8080
 

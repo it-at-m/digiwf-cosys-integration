@@ -32,9 +32,9 @@ public class GenerateDocument {
     private String role;
 
     /**
-     * Path where the document is stored, including the name and type
+     * The S3 presigned url where the document is stored, including the documents name and type
      */
-    private String s3Path;
+    private String s3PresignedUrl;
 
     /**
      * The GUID of the target template to be filled

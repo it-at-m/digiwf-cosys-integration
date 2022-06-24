@@ -5,7 +5,7 @@ import io.muenchendigital.digiwf.integration.cosys.configuration.RestTemplateFac
 import io.muenchendigital.digiwf.integration.cosys.domain.mapper.GenerateDocumentRequestMapper;
 import io.muenchendigital.digiwf.integration.cosys.domain.model.GenerateDocument;
 import io.muenchendigital.digiwf.integration.cosys.domain.model.GenerateDocumentRequest;
-import io.muenchendigital.digiwf.s3.integration.client.repository.DocumentStorageFileRepository;
+import io.muenchendigital.digiwf.s3.integration.client.repository.transfer.S3FileTransferRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.FileSystemResource;
@@ -30,9 +30,8 @@ public class CosysService {
 
     private final RestTemplate restTemplate;
     private final CosysConfiguration cosysConfiguration;
-    private final DocumentStorageFileRepository documentStorageFileRepository;
+    private final S3FileTransferRepository s3FileTransferRepository;
     private final GenerateDocumentRequestMapper generateDocumentRequestMapper;
-
 
     static final String ATTRIBUTE_CLIENT = "client";
     static final String ATTRIBUTE_ROLE = "role";
@@ -42,10 +41,13 @@ public class CosysService {
     static final String ATTRIBUTE_VALIDITY = "validity";
 
 
-    public CosysService(final RestTemplateFactory restTemplateFactory, final CosysConfiguration cosysConfiguration, final DocumentStorageFileRepository documentStorageFileRepository, final GenerateDocumentRequestMapper generateDocumentRequestMapper) {
+    public CosysService(final RestTemplateFactory restTemplateFactory,
+                        final CosysConfiguration cosysConfiguration,
+                        final S3FileTransferRepository s3FileTransferRepository,
+                        final GenerateDocumentRequestMapper generateDocumentRequestMapper) {
         this.restTemplate = restTemplateFactory.authenticatedRestTemplate();
         this.cosysConfiguration = cosysConfiguration;
-        this.documentStorageFileRepository = documentStorageFileRepository;
+        this.s3FileTransferRepository = s3FileTransferRepository;
         this.generateDocumentRequestMapper = generateDocumentRequestMapper;
     }
 
@@ -68,17 +70,19 @@ public class CosysService {
             final HttpEntity body = this.createBody(generateDocumentRequest);
             return this.restTemplate.postForObject(url, body, byte[].class);
         } catch (final Exception ex) {
-            log.error("Document could not be created.", ex);
-            throw new RuntimeException("Document could not be created.");
+            final var error = "Document could not be created.";
+            log.error(error, ex);
+            throw new RuntimeException(error);
         }
     }
 
     private void saveDocument(final GenerateDocument generateDocument, final byte[] data) {
         try {
-            this.documentStorageFileRepository.saveFile(generateDocument.getS3Path(), data, 3, null);
+            this.s3FileTransferRepository.saveFile(generateDocument.getS3PresignedUrl(), data);
         } catch (final Exception ex) {
-            log.error("Document could not be saved", ex);
-            throw new RuntimeException("Document could not be saved.");
+            final var error = "Document could not be saved";
+            log.error(error, ex);
+            throw new RuntimeException(error);
         }
     }
 
@@ -126,4 +130,5 @@ public class CosysService {
         final File file = tempFile.toFile();
         return new FileSystemResource(file);
     }
+
 }

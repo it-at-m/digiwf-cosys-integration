@@ -6,7 +6,7 @@
     <parent>
         <artifactId>digiwf-cosys-integration-parent</artifactId>
         <groupId>io.muenchendigital.digiwf</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
     </parent>
 
     <artifactId>digiwf-cosys-integration</artifactId>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>io.muenchendigital.digiwf</groupId>
             <artifactId>digiwf-s3-integration-client</artifactId>
-            <version>0.0.4</version>
+            <version>0.0.6</version>
             <scope>provided</scope>
         </dependency>
 

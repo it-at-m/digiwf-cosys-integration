@@ -48,15 +48,9 @@ implementation group: 'org.springframework.cloud', name: 'spring-cloud-stream-bi
    typeMappings. These are configured for you by the digiwf-cosys-integration-starter. You also have to configure the
    topics you want to read / send messages from / to.
 
-5. Configure S3
-
-```
-io.muenchendigital.digiwf.s3.client.document-storage-url: http://s3-integration-url:port
-```
-
 See [this](https://github.com/it-at-m/digiwf-spring-cloudstream-utils) for an example.
 
-6. Configure your application
+5. Configure your application
 
 ```
 io.muenchendigital.digiwf.cosys.url=localhost:800
@@ -66,5 +60,5 @@ io.muenchendigital.digiwf.cosys.merge.outputLanguage=Deutsch
 io.muenchendigital.digiwf.cosys.merge.keepFields=unresolved-ref
 ```
 
-7. Define a RestTemplate. For an example, please refer to
+6. Define a RestTemplate. For an example, please refer to
    the [example project](https://github.com/it-at-m/digiwf-cosys-integration/tree/dev/example).
